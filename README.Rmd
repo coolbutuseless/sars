@@ -93,6 +93,8 @@ executing [sas](sas.com) `DATA` and `PROC SQL` statements in R.
 
 * `sars::run(code)` to run some code
     * as long as it is only DATA and PROC SQL statements
+    * and even then, not much of either of those statements is really supported
+      either
 
 ## Installation
 
@@ -115,7 +117,7 @@ sars::run("
   
   
   proc sql;
-    SELECT cyl, sum(mpg) as TOTSALES  FROM mytable
+    SELECT cyl, sum(mpg) as total  FROM mytable
     WHERE am = 1
     GROUP BY cyl
     ORDER BY cyl;

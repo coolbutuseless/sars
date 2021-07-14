@@ -16,6 +16,8 @@ statements in R.
 
 -   `sars::run(code)` to run some code
     -   as long as it is only DATA and PROC SQL statements
+    -   and even then, not much of either of those statements is really
+        supported either
 
 ## Installation
 
@@ -39,7 +41,7 @@ sars::run("
   
   
   proc sql;
-    SELECT cyl, sum(mpg) as TOTSALES  FROM mytable
+    SELECT cyl, sum(mpg) as total  FROM mytable
     WHERE am = 1
     GROUP BY cyl
     ORDER BY cyl;
@@ -47,10 +49,10 @@ sars::run("
 )
 ```
 
-    #>   cyl totsales
-    #> 1   4    224.6
-    #> 2   6     61.7
-    #> 3   8     30.8
+    #>   cyl total
+    #> 1   4 224.6
+    #> 2   6  61.7
+    #> 3   8  30.8
 
 ## Related Software
 
