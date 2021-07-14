@@ -1,0 +1,135 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+
+library(sars)
+```
+
+```{r echo=FALSE, eval=FALSE}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Ensure that images are rendered using a device which understands patterns
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+knitr::opts_chunk$set(dev.args = list(png = list(type = "cairo")))
+
+library(grid)
+library(ingrid)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Parameters for a hex
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+r     <- 100
+theta <- seq(30, 360, 60) * pi/180 
+x     <- r * cos(theta)
+y     <- r * sin(theta)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# a hex polygon
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+hex <- polygon_grob(x, y, fill = 'black')
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create an image maskeed by the hex
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jpg <- png::readPNG("./man/figures/logo.png")
+image <- raster_grob(
+  image  = jpg, 
+  x      = .mm(0),
+  y      = .mm(-5),
+  width  = .mm(4 * 1.0 * r), 
+  height = .mm(3.2 * 1.0 * r),
+  mask   = hex,
+  interpolate = TRUE
+)
+
+hex2 <- ingrid::grob_copy(hex)
+hex2$gp$fill <- '#00000000'
+hex2$gp$lwd  <- 5
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Draw the objects
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+grid::grid.newpage()
+grid::grid.draw(hex)
+grid::grid.draw(image)
+grid::grid.draw(hex2)
+
+
+
+png("./man/figures/logo2.png", type = 'cairo', width = 600, height = 600, bg = 'transparent')
+grid::grid.newpage()
+grid::grid.draw(hex)
+grid::grid.draw(image)
+grid::grid.draw(hex2)
+invisible(dev.off())
+
+
+```
+
+
+
+
+# sars <img src="man/figures/logo2.png" align="right" height="230/"/>
+
+<!-- badges: start -->
+![](https://img.shields.io/badge/cool-useless-green.svg)
+<!-- badges: end -->
+
+`sars` is an totally useless, very experimental, proof-of-concept, oh-my-god-why package for 
+executing [sas](sas.com) `DATA` and `PROC SQL` statements in R.
+
+
+## What's in the box
+
+* `sars::run(code)` to run some code
+    * as long as it is only DATA and PROC SQL statements
+
+## Installation
+
+You can install from [GitHub](https://github.com/coolbutuseless/sars) with:
+
+``` r
+# install.package('remotes')
+remotes::install_github('coolbutuseless/sars')
+```
+
+## Example
+
+```{r example}
+library(sars)
+
+sars::run("
+  data mytable;
+    set 'mtcars';
+  run;
+  
+  
+  proc sql;
+    SELECT cyl, sum(mpg) as TOTSALES  FROM mytable
+    WHERE am = 1
+    GROUP BY cyl
+    ORDER BY cyl;
+  quit;"
+)
+```
+
+
+## Related Software
+
+* [sas](sas.com) 
+
+## Acknowledgements
+
+* R Core for developing and maintaining the language.
+* CRAN maintainers, for patiently shepherding packages onto CRAN and maintaining
+  the repository

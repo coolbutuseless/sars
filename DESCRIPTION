@@ -1,0 +1,14 @@
+Package: sars
+Type: Package
+Title: Statisitcal Analysis in R Suite
+Version: 0.1.0
+Author: mikefc
+Maintainer: mikefc <mikefc@coolbutuseless.com>
+Description: Statistical Analysis in R Suite.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Imports:
+    stringr,
+    sqldf
